@@ -22,10 +22,28 @@ class BlogsModel {
     }
 
     final df = DateFormat('dd MMM');
-
+    print("date ${map['time']}");
     id = map['id'];
     title = map['title'];
     time = df.format(map['time'].toDate());
     description = map['description'];
   }
+
+  BlogsModel.fromAddJson(Map<String, dynamic> map) {
+    if (map['images'] != null) {
+      images = [];
+
+      (map["images"]).forEach((element) {
+        images!.add(element);
+      });
+    }
+
+    final df = DateFormat('dd MMM');
+    print("date ${map['time']}");
+    id = map['id'];
+    title = map['title'];
+    time = df.format(map['time']);
+    description = map['description'];
+  }
+
 }

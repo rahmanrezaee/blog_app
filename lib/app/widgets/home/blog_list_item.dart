@@ -1,5 +1,6 @@
 import 'package:bloc_app/app/routes/app_pages.dart';
 import 'package:bloc_app/app/stores/blog_store.dart';
+import 'package:bloc_app/app/util/const.dart';
 import 'package:bloc_app/app/util/reponsive.dart';
 import 'package:bloc_app/app/widgets/post.dart';
 import 'package:flutter/material.dart';
@@ -59,8 +60,9 @@ class BlogListItems extends StatelessWidget {
                   Navigator.pushNamed(context, Routes.BLOG_FORM,
                       arguments: repo);
                 },
-                delete: () {
-                  store.deleteBlog(repo.id);
+                delete: () async {
+                  await store.deleteBlog(repo.id);
+                  showAlert("Successfully Deleted");
                 },
               );
             });

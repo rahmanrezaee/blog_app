@@ -3,12 +3,14 @@ import 'dart:io';
 
 import 'package:bloc_app/app/services/firebase_functions.dart';
 import 'package:bloc_app/app/stores/blog_store.dart';
+import 'package:bloc_app/app/util/const.dart';
 import 'package:bloc_app/app/util/typegraph.dart';
 import 'package:bloc_app/app/widgets/loading_widget.dart';
 import 'package:bloc_app/app/models/blog_model.dart';
 import 'package:bloc_app/theme/colors.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:provider/provider.dart';
 
@@ -199,16 +201,21 @@ class _BlogFormScreenState extends State<BlogFormScreen> {
               title: title.text.toString(),
               images: image,
               id: model!.id));
+
+          showAlert("Successfully Updated");
         } else {
           await store.addBlog(BlogsModel(
               description: description.text.toString(),
               title: title.text.toString(),
               images: image,
               id: ''));
+
+          showAlert("Successfully Added");
         }
 
-        // ignore: use_build_context_synchronously
-        Navigator.pop(context);
+        Future.delayed(Duration(seconds: 2))
+            .then((value) => // ignore: use_build_context_synchronously
+                Navigator.pop(context));
       } catch (e) {
         print("show all error $e");
       } finally {

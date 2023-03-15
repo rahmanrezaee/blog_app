@@ -42,16 +42,16 @@ abstract class _BlogStore with Store {
   Future addBlog(BlogsModel model) async {
     var result =
         await service.uploadBlog(model.title, model.description, model.images);
-
-    log("result $result");
-    items.add(BlogsModel.fromJson(result));
+    items.add(BlogsModel.fromAddJson(result));
   }
+
   @action
   Future deleteBlog(String id) async {
     await service.deleteBlog(id);
 
     items.removeWhere((element) => element.id == id);
   }
+
   @action
   Future editBlog(BlogsModel model) async {
     await service.editBlog(
