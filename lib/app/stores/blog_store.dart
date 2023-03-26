@@ -41,8 +41,8 @@ abstract class _BlogStore with Store {
   @action
   Future addBlog(BlogsModel model) async {
     var result =
-        await service.uploadBlog(model.title, model.description, model.images);
-    items.add(BlogsModel.fromAddJson(result));
+        await service.uploadBlog(model);
+    items.add(model);
   }
 
   @action
@@ -54,8 +54,7 @@ abstract class _BlogStore with Store {
 
   @action
   Future editBlog(BlogsModel model) async {
-    await service.editBlog(
-        model.id, model.title, model.description, model.images);
+    await service.editBlog(model);
     int i = items.indexWhere((element) => element.id == model.id);
     items[i] = model;
   }

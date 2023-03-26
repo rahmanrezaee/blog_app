@@ -1,0 +1,11 @@
+{
+    "json.maxItemsComputed": 1000000,
+    "editor.formatOnSave": true,
+    "scm.alwaysShowActions": true,
+    "scm.alwaysShowRepositories": true,
+    "scm.providerCountBadge": "visible",
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true,
+        "source.organizeImports": true
+    }
+}

@@ -1,49 +1,22 @@
-import 'package:intl/intl.dart';
 
-class BlogsModel {
-  late String id, title, description;
-  List<String>? images;
-  String? time;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  BlogsModel(
-      {required this.description,
-      required this.title,
-      required this.id,
-      this.time,
-      this.images});
+part 'blog_model.freezed.dart';
+part 'blog_model.g.dart';
 
-  BlogsModel.fromJson(Map<String, dynamic> map) {
-    if (map['images'] != null) {
-      images = [];
+@unfreezed
+class BlogsModel with _$BlogsModel {
+  factory BlogsModel({
+    required String id,
+    required String userId,
+    required String title,
+    @Default("") String description,
+    @Default([]) List<Map> images,
+    required String time,
+  }) = _BlogsModel;
 
-      (map["images"]).forEach((element) {
-        images!.add(element);
-      });
-    }
+  BlogsModel._();
 
-    final df = DateFormat('dd MMM');
-    print("date ${map['time']}");
-    id = map['id'];
-    title = map['title'];
-    time = df.format(map['time'].toDate());
-    description = map['description'];
-  }
-
-  BlogsModel.fromAddJson(Map<String, dynamic> map) {
-    if (map['images'] != null) {
-      images = [];
-
-      (map["images"]).forEach((element) {
-        images!.add(element);
-      });
-    }
-
-    final df = DateFormat('dd MMM');
-    print("date ${map['time']}");
-    id = map['id'];
-    title = map['title'];
-    time = df.format(map['time']);
-    description = map['description'];
-  }
-
+  factory BlogsModel.fromJson(Map<String, Object?> json) =>
+      _$BlogsModelFromJson(json);
 }

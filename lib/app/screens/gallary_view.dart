@@ -1,15 +1,14 @@
-import 'package:bloc_app/app/util/const.dart';
-import 'package:bloc_app/app/widgets/loading_widget.dart';
-import 'package:bloc_app/app/widgets/video_chat_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
+import '../util/const.dart';
+import '../widgets/loading_widget.dart';
+import '../widgets/video_chat_player.dart';
 
 class GalleryViewPage extends StatefulWidget {
   final int initalIndex;
-  final List<String> items;
-  GalleryViewPage({Key? key, required this.items, this.initalIndex = 0})
+  final List<Map> items;
+  const GalleryViewPage({Key? key, required this.items, this.initalIndex = 0})
       : super(key: key);
 
   @override
@@ -53,23 +52,13 @@ class _GalleryViewPageState extends State<GalleryViewPage> {
     );
   }
 
-  Widget generateGallary(String item) {
-    print("item $item");
-    if (item.endsWith(".png") ||
-        item.endsWith(".jpg") ||
-        item.endsWith(".jpeg")) {
-      return CachedNetworkImage(
-        imageUrl: item,
-        progressIndicatorBuilder: (context, url, downloadProgress) =>
-            const LoadingWidget(),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
-        fit: BoxFit.cover,
-      );
-    } else if (item.endsWith(".mp4")) {
-      return VideoChatPlayerWidget(url: item);
+  Widget generateGallary(Map item) {
+   
+    if (item['type'] == FileTypeUpload.video.name) {
+      return VideoChatPlayerWidget(url: item['url']);
     } else {
       return CachedNetworkImage(
-        imageUrl: item,
+        imageUrl: item['url'],
         progressIndicatorBuilder: (context, url, downloadProgress) =>
             const LoadingWidget(),
         errorWidget: (context, url, error) => const Icon(Icons.error),

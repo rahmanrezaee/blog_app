@@ -1,19 +1,28 @@
-import 'package:bloc_app/app/routes/app_pages.dart';
-import 'package:bloc_app/app/stores/blog_store.dart';
-import 'package:bloc_app/app/widgets/home/blog_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../routes/app_pages.dart';
+import '../stores/blog_store.dart';
+import '../widgets/home/blog_list_item.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    BlogStore _store = Provider.of<BlogStore>(context, listen: false);
+    final BlogStore _store = Provider.of<BlogStore>(context, listen: false);
 
     _store.fetchBlog();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Post List"),
+        title: const Text("Post List"),
+        actions: [
+          InkWell(
+            onTap: (){
+
+            },
+            child:const Icon(Icons.person),
+          )
+        ],
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -24,13 +33,7 @@ class HomeScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                child: BlogListItems(_store),
-              ),
+              BlogListItems(_store),
             ],
           ),
         ),

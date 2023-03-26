@@ -7,7 +7,7 @@ import 'package:video_player/video_player.dart';
 
 class VideoChatPlayerWidget extends StatefulWidget {
   final String url;
-  VideoChatPlayerWidget({
+  const VideoChatPlayerWidget({
     required this.url,
   });
 
@@ -58,7 +58,7 @@ class _VideoChatPlayerWidgetState extends State<VideoChatPlayerWidget> {
         child: Container(
           color: Colors.black,
           width: getWidth(context),
-          height: getHeight(context),
+          height: 200,
           child: Stack(
             alignment: AlignmentDirectional.center,
             children: [
@@ -73,7 +73,7 @@ class _VideoChatPlayerWidgetState extends State<VideoChatPlayerWidget> {
                       ),
                     );
                   } else {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }
                 },
               ),
@@ -89,12 +89,12 @@ class _VideoChatPlayerWidgetState extends State<VideoChatPlayerWidget> {
                           borderRadius: BorderRadius.circular(50),
                         ),
                         alignment: Alignment.center,
-                        child: Icon(
+                        child: const Icon(
                           Icons.play_arrow_rounded,
                           color: Colors.white,
                           size: 35,
                         ))
-                    : SizedBox(),
+                    : const SizedBox(),
               ),
               Padding(
                 padding: EdgeInsets.all(10),

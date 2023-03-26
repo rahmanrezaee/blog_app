@@ -54,16 +54,16 @@ class BlogListItems extends StatelessWidget {
             itemBuilder: (_, int index) {
               final repo = store.items[index];
               return PostItem(
-                isPopUpMenuEnabled: true,
+               
                 model: repo,
-                edit: () {
-                  Navigator.pushNamed(context, Routes.BLOG_FORM,
-                      arguments: repo);
-                },
-                delete: () async {
-                  await store.deleteBlog(repo.id);
-                  showAlert("Successfully Deleted");
-                },
+                // edit: () {
+                //   Navigator.pushNamed(context, Routes.BLOG_FORM,
+                //       arguments: repo);
+                // },
+                // delete: () async {
+                //   await store.deleteBlog(repo.id);
+                //   showAlert("Successfully Deleted");
+                // },
               );
             });
       });

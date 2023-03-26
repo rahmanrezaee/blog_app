@@ -1,23 +1,24 @@
-import 'dart:developer';
 import 'dart:io';
 
-import 'package:bloc_app/app/services/firebase_functions.dart';
-import 'package:bloc_app/app/stores/blog_store.dart';
-import 'package:bloc_app/app/util/const.dart';
-import 'package:bloc_app/app/util/typegraph.dart';
-import 'package:bloc_app/app/widgets/loading_widget.dart';
-import 'package:bloc_app/app/models/blog_model.dart';
-import 'package:bloc_app/theme/colors.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:provider/provider.dart';
 
+import '../../theme/colors.dart';
+import '../models/blog_model.dart';
+import '../services/firebase_functions.dart';
+import '../stores/blog_store.dart';
+import '../util/const.dart';
+import '../util/typegraph.dart';
+import '../widgets/loading_widget.dart';
 import '../widgets/uploading_component.dart';
 
 // ignore: must_be_immutable
 class BlogFormScreen extends StatefulWidget {
+  const BlogFormScreen({super.key});
+
   @override
   State<BlogFormScreen> createState() => _BlogFormScreenState();
 }
@@ -36,8 +37,8 @@ class _BlogFormScreenState extends State<BlogFormScreen> {
       model = ModalRoute.of(context)!.settings.arguments as BlogsModel;
       title.text = model!.title;
       description.text = model!.description;
-      if (model!.images != null && model!.images!.isNotEmpty) {
-        images = model!.images!.map((e) => {"url": e}).toList();
+      if (model!.images.isNotEmpty) {
+        images = model!.images;
       }
       setState(() {});
     });
@@ -163,6 +164,9 @@ class _BlogFormScreenState extends State<BlogFormScreen> {
           "percentage": 0,
           "status": "uploading",
           "url": "",
+          "type": element.path?.split(".").last == "mp4"
+              ? FileTypeUpload.video.name
+              : FileTypeUpload.image.name
         }
       ];
     });
@@ -192,23 +196,34 @@ class _BlogFormScreenState extends State<BlogFormScreen> {
 
       var store = Provider.of<BlogStore>(context, listen: false);
 
-      List<String> image = images.map((e) => e['url'].toString()).toList();
+      List<Map> image =
+          images.map((e) => {"url": e['url'], "type": e['type']}).toList();
+
+     String userId =  FirebaseAuth.instance.currentUser!.uid;
 
       try {
         if (model != null) {
           await store.editBlog(BlogsModel(
               description: description.text.toString(),
               title: title.text.toString(),
+              userId: userId,
               images: image,
-              id: model!.id));
+              time: model!.time,
+              id: model!.id,
+            ));
 
           showAlert("Successfully Updated");
         } else {
+          String id = generateId();
+          DateTime time = DateTime.now();
+
           await store.addBlog(BlogsModel(
               description: description.text.toString(),
               title: title.text.toString(),
               images: image,
-              id: ''));
+               userId: userId,
+              id: id,
+              time: time.toIso8601String()));
 
           showAlert("Successfully Added");
         }
