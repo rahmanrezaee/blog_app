@@ -14,15 +14,9 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-
-
-
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-  
-  
-  
     return MultiProvider(
       providers: [
         Provider<BlogStore>(create: (_) => BlogStore()),
@@ -31,7 +25,8 @@ class MyApp extends StatelessWidget {
         title: 'Blog App',
         theme: blogTheme(context),
         initialRoute: FirebaseAuth.instance.currentUser != null
-          ? Routes.HOME : Routes.LOGIN ,
+            ? Routes.HOME
+            : Routes.LOGIN,
         routes: AppPages.routes,
       ),
     );

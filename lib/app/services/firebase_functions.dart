@@ -162,7 +162,7 @@ class FirebaseFunctions {
 
     List<CommentModel> temp = [];
     result.docs.map((doc) async {
-      temp.add( CommentModel.fromDocument(doc));
+      temp.add(CommentModel.fromDocument(doc));
     }).toList();
     log("Comment $temp");
     return temp;
@@ -244,8 +244,6 @@ class FirebaseFunctions {
   Future<void> removeFollowUser({required String removeFollowUser}) async {
     var userId = auth.currentUser!.uid;
 
-    log("unfollow $userId $removeFollowUser");
-
     // Remove unfollowUser from user's userFollowing.
     await _firebaseFirestore
         .collection(Paths.followers)
@@ -259,6 +257,22 @@ class FirebaseFunctions {
         .doc(removeFollowUser)
         .collection(Paths.userFollowers)
         .doc(userId)
+        .delete();
+
+    // Remove unfollowUser from user's userFollowing.
+    await _firebaseFirestore
+        .collection(Paths.following)
+        .doc(removeFollowUser)
+        .collection(Paths.userFollowing)
+        .doc(userId)
+        .delete();
+
+    // Remove unfollowUser from user's userFollowing.
+    await _firebaseFirestore
+        .collection(Paths.following)
+        .doc(userId)
+        .collection(Paths.userFollowing)
+        .doc(removeFollowUser)
         .delete();
   }
 

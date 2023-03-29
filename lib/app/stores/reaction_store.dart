@@ -30,7 +30,7 @@ abstract class _ReactionStore with Store {
 
     likeList.clear();
     likeList.addAll(result);
-
+    isLikedPost(postId);
     isLoading = false;
 
     return result;
@@ -52,14 +52,17 @@ abstract class _ReactionStore with Store {
 
   @action
   Future likePost(String postId) async {
-    isLoading = true;
+    try {
+      isLoading = true;
+      isLiked = !isLiked;
+      final result = await service.likePost(postId, likeList);
+      await getLike(postId);
+      isLoading = false;
 
-    final result = await service.likePost(postId, likeList);
-    await getLike(postId);
-    isLikedPost(postId);
-    isLoading = false;
-
-    return result;
+      return result;
+    } catch (e) {
+      isLiked = !isLiked;
+    }
   }
 
   @action

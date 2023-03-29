@@ -5,8 +5,7 @@ import '../../theme/colors.dart';
 import '../stores/connect_store.dart';
 
 class FollowerListScreen extends StatefulWidget {
-
-    final String userId;
+  final String userId;
   FollowerListScreen({required this.userId, super.key});
 
   @override
@@ -14,9 +13,9 @@ class FollowerListScreen extends StatefulWidget {
 }
 
 class _FollowerListScreenState extends State<FollowerListScreen> {
- ConnectionStore _store = ConnectionStore();
+  ConnectionStore _store = ConnectionStore();
 
-  initState(){
+  initState() {
     _store.fetchFollower(widget.userId);
   }
 
@@ -24,7 +23,7 @@ class _FollowerListScreenState extends State<FollowerListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Following List"),
+        title: const Text("Follower List"),
       ),
       body: Observer(builder: (context) {
         if (!_store.isLoading) {
@@ -46,16 +45,16 @@ class _FollowerListScreenState extends State<FollowerListScreen> {
                           ),
                         ),
                         onPressed: () async {
-                          await _store.unFollowUser(_store.followerList[index].id);
-                          await _store.fetchFollowing(widget.userId);
+                          await _store
+                              .removeFollowUser(_store.followerList[index].id);
+                          await _store.fetchFollower(widget.userId);
                         },
-                        child:Text(
-                              "Remove",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6!
-                                  .copyWith(fontWeight: FontWeight.w500),
-                            
+                        child: Text(
+                          "Remove",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline6!
+                              .copyWith(fontWeight: FontWeight.w500),
                         ),
                       ),
                     );
